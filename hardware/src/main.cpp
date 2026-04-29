@@ -398,18 +398,27 @@ void drawStartImage() {
     display.fillScreen(GxEPD_WHITE);
     display.drawRect(0, 0, display.width(), display.height(), GxEPD_BLACK);
 
-    display.fillRect(93, 34, 14, 82, GxEPD_BLACK);
-    display.fillRect(64, 58, 72, 14, GxEPD_BLACK);
+    const int16_t beads[][2] = {
+        {100, 116}, {125, 109}, {142, 90}, {146, 64}, {132, 40}, {113, 28},
+        {87, 28}, {68, 40}, {54, 64}, {58, 90}, {75, 109}};
+    constexpr uint8_t beadCount = sizeof(beads) / sizeof(beads[0]);
 
-    display.drawCircle(100, 138, 5, GxEPD_BLACK);
-    display.drawCircle(82, 134, 5, GxEPD_BLACK);
-    display.drawCircle(67, 123, 5, GxEPD_BLACK);
-    display.drawCircle(58, 106, 5, GxEPD_BLACK);
-    display.drawCircle(57, 88, 5, GxEPD_BLACK);
-    display.drawCircle(143, 88, 5, GxEPD_BLACK);
-    display.drawCircle(142, 106, 5, GxEPD_BLACK);
-    display.drawCircle(133, 123, 5, GxEPD_BLACK);
-    display.drawCircle(118, 134, 5, GxEPD_BLACK);
+    for (uint8_t i = 0; i < beadCount; i++) {
+      const uint8_t next = (i + 1) % beadCount;
+      display.drawLine(beads[i][0], beads[i][1], beads[next][0], beads[next][1], GxEPD_BLACK);
+      display.drawLine(beads[i][0] + 1, beads[i][1], beads[next][0] + 1, beads[next][1], GxEPD_BLACK);
+    }
+
+    display.drawLine(100, 116, 100, 154, GxEPD_BLACK);
+    display.drawLine(101, 116, 101, 154, GxEPD_BLACK);
+
+    for (uint8_t i = 0; i < beadCount; i++) {
+      display.fillCircle(beads[i][0], beads[i][1], 7, GxEPD_BLACK);
+    }
+    display.fillCircle(100, 136, 7, GxEPD_BLACK);
+
+    display.fillRect(97, 148, 8, 40, GxEPD_BLACK);
+    display.fillRect(85, 158, 32, 8, GxEPD_BLACK);
   } while (display.nextPage());
 }
 
